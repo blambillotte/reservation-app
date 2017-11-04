@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Star Wars - Express</title>
+  <title>Add a Reservation</title>
   <!-- Latest compiled and minified CSS & JS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <script src="https://code.jquery.com/jquery.js"></script>
@@ -28,33 +28,44 @@
             <h3 class="panel-title"><strong>Make a Reservation</strong></h3>
           </div>
           <div class="panel-body">
-            <form method="POST" role="form">
+            <form method="POST" role="form" id="form">
 
-              <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" id="name">
+              <div class="row">
+                <div class="form-group col-sm-6">
+                  <label for="name">Name</label>
+                  <input type="text" class="form-control" id="name" data-error="Name is Required" required>
+                  <div class="help-block with-errors"></div>
+
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label for="phone">Phone Number</label>
+                  <input type="text" class="form-control" id="phone" data-error="Phone Number Required" required>
+                  <div class="help-block with-errors"></div>
+                </div>
               </div>
 
-              <div class="form-group">
-                <label for="phone">Phone Number</label>
-                <input type="text" class="form-control" id="phone">
+              <div class="row">
+                <div class="form-group col-sm-6">
+                  <label for="email">Email</label>
+                  <input type="email" class="form-control" id="email" data-error="Plese enter a valid email" required>
+                  <div class="help-block with-errors"></div>
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label for="uid">Unique ID</label>
+                  <input type="text" class="form-control" id="uid" required>
+                  <div class="help-block with-errors"></div>
+                </div>
               </div>
 
-              <div class="form-group">
-                <label for="email">Email</label>
-                <input type="text" class="form-control" id="email">
-              </div>
 
-              <div class="form-group">
-                <label for="uid">Unique ID</label>
-                <input type="text" class="form-control" id="uid">
+              <br>
+              <div class="text-right">
+                <button type="submit" class="btn btn-primary btn-md" id="add-btn"><span class="glyphicon glyphicon-fire"></span> Submit Reservation</button>
               </div>
 
             </form>
-            <br>
-            <div class="text-right">
-              <button type="submit" class="btn btn-primary btn-md" id="add-btn"><span class="glyphicon glyphicon-fire"></span> Submit Reservation</button>
-            </div>
           </div>
         </div>
 
@@ -62,27 +73,36 @@
     </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.js" charset="utf-8"></script>
+
   <script type="text/javascript">
-    // Question: What does this code do?
-    $('#add-btn').on('click', function(event) {
-      // event.preventDefault();
-      var newTable = {
-        name: $('#name').val().trim(),
-        phoneNum: $('#phone').val().trim(),
-        email: $('#email').val().trim(),
-        uid: $('#uid').val().trim()
-      };
 
-      $('#name').val('');
-      $('#phone').val('');
-      $('#email').val('');
-      $('#uid').val('');
+  $('#form').validator().on('submit', function (e) {
+    if (e.isDefaultPrevented()) {
+      // handle the invalid form...
+    } else {
+        e.preventDefault();
+        // everything looks good!
+        var newTable = {
+          name: $('#name').val().trim(),
+          phoneNum: $('#phone').val().trim(),
+          email: $('#email').val().trim(),
+          uid: $('#uid').val().trim()
+        };
 
-      $.post("/api/new", newTable)
-      .done(function(data) {
-        console.log(data);
-      });
-    });
+        //Clear Values upon submit
+        $('#name').val('');
+        $('#phone').val('');
+        $('#email').val('');
+        $('#uid').val('');
+
+        $.post("/api/new", newTable)
+        .done(function(data) {
+          console.log(data);
+        });
+    }
+  })
+
   </script>
 
 </body>
