@@ -42,12 +42,15 @@ const tables = [
 ];
 
 const isOverBooked = () => {
+
   let currentCount = 0;
   for (let i = 0; i < tables.length; i++) {
     if (tables[i].isCurrent) {
       currentCount++;
+      console.log(`${tables[i].uid} Is Current` )
     }
   }
+  console.log(`Table Length: ${tables.length}. Current Count: ${currentCount}`);
   if (currentCount > 4) {
     return true;
   } else {
@@ -84,7 +87,7 @@ app.post("/api/new", function(req, res) {
   // This works because of our body-parser middleware
   var newTable = req.body;
   newTable.routeName = newTable.name.replace(/\s+/g, "").toLowerCase();
-  newTable.isCurrent = isOverBooked();
+  newTable.isCurrent = !isOverBooked();
 
   console.log(newTable);
 
