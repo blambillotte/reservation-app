@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BMD Hot Restuarant!</title>
+  <!-- Latest compiled and minified CSS & JS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+  <div class="container">
+    <div class="jumbotron"><center>
+      <h1>MBD Hot Restaurant</h1>
+      <h3>Current Reservtions and Waiting List</h3>
+      <hr>
+      <a href="/reserve"><button type="make_res" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-plus"></span> Make a reservation</button></a>
+      <a href="/"><button type="homepage" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-plus"></span> Home</button></a>
+    </div></center>
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><strong>Current Tables</strong></h3>
+          </div>
+          <div class="panel-body" id="current">
+            <!--Content Added Here -->
+          </div>
+        </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><strong>Waitlist Tables</strong></h3>
+        </div>
+        <div class="panel-body" id="waitlist">
+
+        </div>
+      </div>
+  </div>
+
+
+  <script type="text/javascript">
+
+  function createListing(listingString, isCurrent) {
+    const parentContainer = $('<div>');
+    parentContainer.addClass('well');
+
+    parentContainer.html(listingString);
+    if (isCurrent) {
+      $('#current').append(parentContainer);
+    } else {
+      $('#waitlist').append(parentContainer);
+    }
+  };
+
+
+  $.get("/api/table-data", function(data) {
+    console.log(data);
+    for (var i = 0; i < data.length; i++) {
+      const email = data[i].email;
+      const name = data[i].name;
+      const phone = data[i].phoneNum;
+      const uid = data[i].uid;
+      const isCurrent = data[i].isCurrent;
+      const listingString = `Email: ${email} Name: ${name} Phone: ${phone} UID: ${uid}`;
+
+
+      const markup = `
+        <h3><strong>Name:</strong> <span class="name">${name}</span></h3>
+        <h3><strong>Email:</strong> <span class="email">${email}</span></h3>
+        <h3><strong>Phone Number:</strong> <span class="Number">${phone}</span></h3>
+        <h3><strong>Unique ID:</strong> <span class="userId">${uid}</span></h3>
+      `;
+
+
+      createListing(markup, isCurrent);
+    }
+
+  });
+
+
+    $("#search-btn").on("click", function() {
+      var searchedCharacter = $("#character-search").val().trim();
+
+      searchedCharacter = searchedCharacter.replace(/\s+/g, "").toLowerCase();
+
+      $.get("/api/" + searchedCharacter, function(data) {
+        console.log(data);
+        if (data) {
+          $("#stats").show();
+          $("#name").text(data.name);
+          $("#role").text(data.role);
+          $("#age").text(data.age);
+          $("#force-points").text(data.forcePoints);
+        }
+        else {
+          $("#name").text("The force is not strong with this one. Your character was not found.");
+          $("#stats").hide();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

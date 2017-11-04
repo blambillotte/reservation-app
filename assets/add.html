@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Star Wars - Express</title>
+  <!-- Latest compiled and minified CSS & JS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+  <div class="container">
+    <div class="jumbotron"><center>
+      <h1>MBD Hot Restaurant</h1>
+      <h3>Make your reservation below!</h3>
+      <hr>
+      <a href="/tables"><button type="view_tables" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-eye-open"></span> View Tables</button></a>
+      <a href="/"><button type="homepage" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-eye-open"></span> Home</button></a>
+    </div></center>
+    <div class="row">
+
+      <div class="col-lg-12">
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><strong>Make a Reservation</strong></h3>
+          </div>
+          <div class="panel-body">
+            <form method="POST" role="form">
+
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name">
+              </div>
+
+              <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="text" class="form-control" id="phone">
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" class="form-control" id="email">
+              </div>
+
+              <div class="form-group">
+                <label for="uid">Unique ID</label>
+                <input type="text" class="form-control" id="uid">
+              </div>
+
+            </form>
+            <br>
+            <div class="text-right">
+              <button type="submit" class="btn btn-primary btn-md" id="add-btn"><span class="glyphicon glyphicon-fire"></span> Submit Reservation</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    // Question: What does this code do?
+    $('#add-btn').on('click', function(event) {
+      // event.preventDefault();
+      var newTable = {
+        name: $('#name').val().trim(),
+        phoneNum: $('#phone').val().trim(),
+        email: $('#email').val().trim(),
+        uid: $('#uid').val().trim()
+      };
+
+      $('#name').val('');
+      $('#phone').val('');
+      $('#email').val('');
+      $('#uid').val('');
+
+      $.post("/api/new", newTable)
+      .done(function(data) {
+        console.log(data);
+      });
+    });
+  </script>
+
+</body>
+</html>
