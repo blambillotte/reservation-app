@@ -68,6 +68,10 @@ app.get("/", function(req, res) {
   res.sendFile(path.join(__dirname, "assets/index.html"));
 });
 
+app.get("/assets/css/style.css", function(req, res) {
+  res.sendFile(path.join(__dirname, "assets/css/style.css"));
+});
+
 app.get("/tables", function(req, res) {
   res.sendFile(path.join(__dirname, "assets/view.html"));
 });
